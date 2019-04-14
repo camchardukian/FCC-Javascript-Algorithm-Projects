@@ -1,9 +1,10 @@
-// I pushed the wrong code in my previous update. Here's my rough draft halfway through
-// solving this problem. This currently solved about 70% of the possible inputs.
-// I'll solve the rest of this problem tonight or tomorrow.
+// I think that I'm now about 80% of my way through this problem. Though I'm not certain,
+// it seems like I'm going to need to solidify my understanding of Regex lookaheads if
+// I am to solve this problem in a semi-efficient manner. Anyway, this update includes
+// adding some optional parentheses to match a greater number of relevant formats.
 
 function telephoneCheck(str) {
-let telephoneRegex = /1?\s\d{3}[-_\s]?\d{3}[-_\s]?\d{4}/g;
+let telephoneRegex = /1?[-\s_]?\(?\d{3}[-_\s)]?\s?\d{3}[-_\s]?\d{4}/g;
   if (str.match(telephoneRegex)) {
     return true;
   }

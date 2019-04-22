@@ -1,14 +1,9 @@
-// I've spent a solid 12 hours programming over the last 4 days. Considering that programming
-// has not been my sole focus and that I've also had many other obligations I've had to
-// attend to, I'm very proud of this fact! Here's another draft with slightly more 
-// progress made on this project. Yesterday I spent about 2.5 hours programming, but I
-// didn't get around to posting an update on GitHub. Today I had an unexpected visit
-// from a loved one so I probably won't spend more than 45 or so minutes programming today.
-// With that being said, yesterday I watched a really cool video on JavaScript numbers.
-// It explained why numbers in JavaScript are wacky via examples given using binaries
-// and the floating point system. If you're interested in watching that video, check it
-// out here: https://www.youtube.com/watch?v=MqHDDtVYJRI
-// Anyway, let's get down to my own code below!
+// Notes in this update: I'm not sure I got any coding time in over the weekend. Even with
+// that being the case, however, last week I still spent a solid 16+ hours engaged with 
+// code -- not bad considering I still have a host of other obligations. Fortunately, I
+// got back on the grind today with a solid hour of coding. I made another note below
+// within my code... see (CURRENT UPDATE:). I'll try to keep the momentum going in the
+// coming days!
 
 // This is an array of objects I made. I thought it was important to create such an array
 // in order to know how much the value of each currency denomination is. Then, when we
@@ -48,6 +43,11 @@ function checkCashRegister(price, cash, cid) {
 // I realized that by using the .toFixed() method that I could mitigate the inaccuracies
 // that sometimes come about due to the limited amount of bytes in JavaScript's number
 // system. In this example, I've fixed our numbers to the 2nd decimal place.
+// CURRENT UPDATE: I think I'll have to change this code because I discovered that using
+// the toFixed method returns a string while what I really need is a number. Thus, using
+// Math.Round(register.total*100)/100 == change probably makes more sense. I'll check this
+// out in more detail in the coming days.
+
   if (register.total.toFixed(2) == change) {
   // Setting our output values based upon this use case scenario.
     output.status = "CLOSED";

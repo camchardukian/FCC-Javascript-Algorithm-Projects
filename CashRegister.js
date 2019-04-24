@@ -1,15 +1,10 @@
-// Notes in this update: I'm not sure I got any coding time in over the weekend. Even with
-// that being the case, however, last week I still spent a solid 16+ hours engaged with 
-// code -- not bad considering I still have a host of other obligations. Fortunately, I
-// got back on the grind today with a solid hour of coding. I made another note below
-// within my code... see (CURRENT UPDATE:). I'll try to keep the momentum going in the
-// coming days!
+// UPDATE: I've been kind of stuck in this challenge so I started from scratch, and left new 
+// comments about what I've been doing. I thought this would help me try new things,
+// and help me solidify my understanding of my progress thus far, by having to re-explain
+// everything I've done.
 
-// This is an array of objects I made. I thought it was important to create such an array
-// in order to know how much the value of each currency denomination is. Then, when we
-// calculate change we'll know which increments in which to give the change and what
-// current denominations are most suitable.
-let currencyDenoms = [
+//An array that lists our currency denominations and gives them a value.
+currencyDenoms = [
   {name: 'ONE HUNDRED', val: 100.00},
   {name: 'TWENTY', val: 20.00},
   {name: 'TEN', val: 10.00},
@@ -18,53 +13,67 @@ let currencyDenoms = [
   {name: 'QUARTER', val: 0.25},
   {name: 'DIME', val: 0.10},
   {name: 'NICKEL', val: 0.05},
-  {name: 'PENNY', val: 0.01}
+  {name: 'PENNY', val: 0.01},
 ];
-
-// This is the predefined function given to us by FreeCodeCamp.
+// declaring our function.
 function checkCashRegister(price, cash, cid) {
-// Here I created an output object that we'll return which the message and information
-// we want to deliver to our users.
+  // Initializing the default output our function will return.
   let output = {status: null, change: []};
-  // A basic calculation to determine how much change we should give users.
+  // calculating a basic formula for change.
   let change = cash - price;
-  // Using the reduce method to calculate how much total cash we have in our cash register
-  // based upon what array of values the user passes to the cid argument.
-  let register = cid.reduce(function(acc, current){
-  // Here we are incrementing and eventually calculating the total amount of cash in our
-  // register.
-    acc.total += current[1];
-    // Here, we are setting the acc's key equal to the value in current[1]. This will help
-    // us to determine how much money we have in each denomination of currency.
-    acc[current[0]] = current[1];
+  // Using the reduce function on our cid argument allows us to calculate the total amount of cash in the register. 
+  let register = cid.reduce(function(acc, curr){
+    // increments our accumulator by the current value of zero. For
+    // example if we have 1.01 in pennies we'll add that value to
+    // the total amount of change in our register.
+    acc.total += curr[1];
+// Here we are no longer focused on the sum of how much cash is in 
+// our register. Instead we're focused on the contents of the cid and
+// ensuring all of those contents along with their values
+// are also included in our register variable. Example: penny -> 1.01
+    acc[curr[0]] = curr[1];
+    // We return the value of our acc to make it usable beyond the
+    // scope of this function by attaching its values to our register
+    // variable.
     return acc;
-  }, {total: 0});
-  
-// I realized that by using the .toFixed() method that I could mitigate the inaccuracies
-// that sometimes come about due to the limited amount of bytes in JavaScript's number
-// system. In this example, I've fixed our numbers to the 2nd decimal place.
-// CURRENT UPDATE: I think I'll have to change this code because I discovered that using
-// the toFixed method returns a string while what I really need is a number. Thus, using
-// Math.Round(register.total*100)/100 == change probably makes more sense. I'll check this
-// out in more detail in the coming days.
+  }, //giving our reduce function an initial value of 0.
+  {total: 0});
+  // Accounting for some of the small value discrepancies that can occur
+  // in Javascript as a result of the manner in which Javascript uses
+  // binaries in dealing with numbers.
+  register.total = Math.round(register.total*100)/100;
+  change = Math.round(change*100)/100;
 
-  if (register.total.toFixed(2) == change) {
-  // Setting our output values based upon this use case scenario.
+  // Below we're looking at two scenarios in which we already have all
+  // the information we need to quickly return the proper values without
+  // having to waste any additional time using reduce on our
+  // currencyDenoms object.
+
+  if (register.total == change) {
     output.status = "CLOSED";
     output.change = cid;
     return output;
   }
-  // We know that we simply don't have enough money if the total amount of cash in our
-  // register is less than the change we are obligated to give.
-  if (register.total.toFixed(2) < change) {
+  if (register.total < change) {
     output.status = "INSUFFICIENT_FUNDS";
+    // We don't have to adjust the value of change because we already
+    // initialized output.change to an empty array and in the case of
+    // insufficient funds this challenge simply wants us to return an
+    // empty array.
     return output;
   }
+let change_arr = currencyDenoms.reduce(function(acc, curr){
+ // I know I need to do something with register, the currencyDenoms
+ // array, and pushing things to this change array,
+ // but I haven't quite figured out how I'm going to go about doing this yet.
+}, 0)
 }
 
+// calling our function.
+checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1],
+["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20],
+["TWENTY", 60], ["ONE HUNDRED", 100]]);
 
-
-checkCashRegister(1900, 20000, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
 
 
 // This challenge was completed to the best of my abilities in April 2019. For

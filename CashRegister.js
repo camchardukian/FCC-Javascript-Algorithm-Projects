@@ -1,10 +1,20 @@
-// UPDATE: I've been kind of stuck in this challenge so I started from scratch, and left new 
-// comments about what I've been doing. I thought this would help me try new things,
-// and help me solidify my understanding of my progress thus far, by having to re-explain
-// everything I've done.
+// UPDATE: After about 10 days of grinding, I've finally completed this project! In doing
+// so, I've become much more comfortable with Javascript's reduce function, working with
+// objects, and understanding JavaScript's quirkiness in dealing with numbers. While my
+// solution may or may not be ideal, I've left detailed comments for you below to help
+// you understand my thinking in solving this problem.
+
+// If this problems has you as stumped as I was, hopefully you'll find my notes useful!
+// Also, as of completing this project, I've dedicated approximately 500 hours of my life
+// learning to code thus far. This is a bit of a random fact.
+
+// However, if you're learning to code you may find it a rough approximation at how long
+// it may take for you to get comfortable working with HTML, CSS, and vanilla JavaScript.
+
+// Code and comment explanations start below.
 
 //An array that lists our currency denominations and gives them a value.
-currencyDenoms = [
+let currencyDenoms = [
   {name: 'ONE HUNDRED', val: 100.00},
   {name: 'TWENTY', val: 20.00},
   {name: 'TEN', val: 10.00},
@@ -21,9 +31,10 @@ function checkCashRegister(price, cash, cid) {
   let output = {status: null, change: []};
   // calculating a basic formula for change.
   let change = cash - price;
-  // Using the reduce function on our cid argument allows us to calculate the total amount of cash in the register. 
+  // Using the reduce function on our cid argument allows us to calculate
+  // the total amount of cash in the register. 
   let register = cid.reduce(function(acc, curr){
-    // increments our accumulator by the current value of zero. For
+    // Increments our accumulator by the current value. For
     // example if we have 1.01 in pennies we'll add that value to
     // the total amount of change in our register.
     acc.total += curr[1];
@@ -45,7 +56,7 @@ function checkCashRegister(price, cash, cid) {
   change = Math.round(change*100)/100;
 
   // Below we're looking at two scenarios in which we already have all
-  // the information we need to quickly return the proper values without
+  // the information we need to quickly return the proper outputs without
   // having to waste any additional time using reduce on our
   // currencyDenoms object.
 
@@ -62,18 +73,60 @@ function checkCashRegister(price, cash, cid) {
     // empty array.
     return output;
   }
+  // Here we setting our change array to equal whatever
+  // our acc returns after we run reduce on currencyDenoms.
 let change_arr = currencyDenoms.reduce(function(acc, curr){
- // I know I need to do something with register, the currencyDenoms
- // array, and pushing things to this change array,
- // but I haven't quite figured out how I'm going to go about doing this yet.
-}, 0)
+  // We are initializing value to 0. This value represents how much change we are
+  // giving out in that specific currency denomination.
+        let value = 0;
+  // While the value in our register of the current currency is greater than or equal to
+  // the value of one unit of that currency denomination AND our change is greater than or
+  // equal to the value of one unit of the current currency denomination.
+  while (register[curr.name] >= curr.val && change >= curr.val) {
+    // decrement change by the value of one unit of the currency denomination currently
+    // operating as the curr.val.
+change -= curr.val;
+// decrement the money in our register by the value of one unit of the currency
+// denomination currently operating as the curr.val.
+register[curr.name] -= curr.val;
+// increment value by the value of one unit of the currency denomination currently
+// operating as the curr.val.
+value += curr.val;
+// Avoid inaccurate numbers in Javascript by utilizing Math.round.
+change = Math.round(change*100)/100;
+  }
+  // If our value was successfully incremented, we'll push curr.name (the name of some 
+  // currency denomination such as 'ONE HUNDRED' or 'PENNY', along with a value
+  // representing how much of that currency we should give in change.)
+  if (value > 0) {
+    // Note that we're pushing an array as the challenge wants us to return the change
+    // in the format of a two-dimensional array.
+    acc.push([curr.name, value]);
+  }
+  // We want to return our acc so that before exiting our function we are able to return
+  // any value(s) stored in acc. Note: This return statement will also prevent a TypeError
+  // caused by the push property being undefined.
+  return acc;
+}, []);
+// If there are any values in our change_arr AND our change equals 0 we will know that we
+// have the ability to successfully give out change.
+if (change_arr.length > 0 && change == 0) {
+  output.status = 'OPEN';
+  output.change = change_arr;
+  return output;
+}
+// If either of the above conditions return false, we know that we do not have the correct
+// denominations to successfully give out an appropriate amount of change.
+else {
+  output.status = "INSUFFICIENT_FUNDS";
+return output;
+}
 }
 
 // calling our function.
-checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1],
+checkCashRegister(3.26, 100, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1],
 ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20],
 ["TWENTY", 60], ["ONE HUNDRED", 100]]);
-
 
 
 // This challenge was completed to the best of my abilities in April 2019. For
